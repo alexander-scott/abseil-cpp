@@ -26,6 +26,7 @@ cc_configure = use_extension("@rules_cc//cc:extensions.bzl",
 use_repo(cc_configure, "local_config_cc")
 
 bazel_dep(name = "rules_cc", version = "0.2.9")
+bazel_dep(name = "rules_shell", version = "0.4.1")
 bazel_dep(name = "bazel_skylib", version = "1.8.1")
 bazel_dep(name = "platforms", version = "1.0.0")
 
@@ -40,4 +41,19 @@ bazel_dep(
 bazel_dep(
     name = "googletest",
     version = "1.17.0.bcr.2",
+)
+
+bazel_dep(name = "remote_config_cc")
+bazel_dep(name = "remote_config_sh")
+
+# Import toolchain repositories for remote executions, but register the
+# toolchains using --extra_toolchains on the command line to get precedence.
+local_path_override(
+    module_name = "remote_config_cc",
+    path = "bazel/remote-toolchains/ubuntu-act-22-04/local_config_cc",
+)
+
+local_path_override(
+    module_name = "remote_config_sh",
+    path = "bazel/remote-toolchains/ubuntu-act-22-04/local_config_sh",
 )

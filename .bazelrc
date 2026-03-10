@@ -1,0 +1,28 @@
+build --cxxopt=-std=c++17
+build --host_cxxopt=-std=c++17
+
+common --enable_platform_specific_config
+
+# Don't inherit the user environment as that trashes the cache.
+build --incompatible_strict_action_env
+# Use the new way of defining toolchains.
+build --incompatible_use_cc_configure_from_rules_cc=true
+
+# Profile
+build --profile=profile.gz
+build --noslim_profile
+build --experimental_profile_include_target_label
+build --experimental_profile_include_primary_output
+
+# BEP
+build --build_event_json_file=build_events.json
+build --build_event_publish_all_actions
+
+build:ci --incompatible_enable_cc_toolchain_resolution=true
+build:ci --extra_toolchains=//bazel/remote-toolchains:all
+build:ci --extra_execution_platforms=//bazel/remote-toolchains:ubuntu-act-22-04-platform
+build:ci --remote_download_minimal
+build:ci --nobuild_runfile_links
+build:ci --jobs=8
+build:ci --remote_cache=grpc://3.70.35.182.nip.io:8980
+build:ci --remote_executor=grpc://3.70.35.182.nip.io:8980
